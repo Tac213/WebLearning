@@ -13,7 +13,7 @@ body {
 }
 
 .game-title {
-    font-size: 45;
+    font-size: 45px;
     color: #fff;
 }
 
@@ -21,4 +21,50 @@ body {
     background-color: #f0f0f0;
     display: block;  /* use block layout */
     border-radius: 5px;  /* make the block a rounded rectangle */
+}
+
+.btn {
+    cursor: pointer;
+    border: 0;
+    padding: 10px 20px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    transition: 0.1s;
+}
+
+.btn:hover {
+    background: #222;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+.btn:active {
+    transform: scale(0.9);
+}
+
+.rules-btn {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.rules {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    padding: 20px;
+    line-height: 1.5;
+    min-height: 100vh;  /* makes div expand the whole view height */
+    background: #333;
+    color: white;
+    transform: translateX(-400px);
+    transition: transform 1s ease-in-out;
+}
+
+.rules.show {
+    transform: translateX(0px);
 }

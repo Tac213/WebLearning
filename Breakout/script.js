@@ -635,3 +635,7 @@ const drawCanvas = document.getElementById('draw-canvas');
 const context = drawCanvas.getContext('2d');
 // @ts-ignore
 let world = new World(drawCanvas.width, drawCanvas.height, context);
+
+const rules = document.getElementById('rules');
+document.getElementById('rules-btn').addEventListener('click', () => {rules.classList.add('show')});
+document.getElementById('close-btn').addEventListener('click', () => {rules.classList.remove('show')});
