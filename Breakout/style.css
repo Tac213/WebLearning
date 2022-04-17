@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: lightblue;
+    margin: 0;
+    /* flex layout attributes */
+    display: flex;  /* use flex box layout https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-title {
+    font-size: 45;
+    color: #fff;
+}
+
+#draw-canvas {
+    background-color: #f0f0f0;
+    display: block;  /* use block layout */
+    border-radius: 5px;  /* make the block a rounded rectangle */
+}
