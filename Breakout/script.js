@@ -14,11 +14,13 @@ class Actor
 
     /**
      * tick the actor
+     * @returns {void} 
      */
     tick() {}
 
     /**
      * draw the actor
+     * @returns {void} 
      */
     draw() {}
 
@@ -33,6 +35,7 @@ class Actor
 
     /** set visibility of actor
      * @param {boolean} isVisible
+     * @returns {void} 
      */
     setVisibility(isVisible)
     {
@@ -44,15 +47,16 @@ class Actor
 
 class GameMode extends Actor
 {
+    /**
+     * will be called when the ball hits ground
+     * @returns {void}
+     */
     onBallHitGround()
     {
-        for (let brickRow of this.world.getBricks())
+        this.getWorld().iterateBricks((brick) =>
         {
-            for (let brick of brickRow)
-            {
-                brick.setVisibility(true);
-            }
-        }
+            brick.setVisibility(true);
+        });
     }
 }
 
@@ -71,6 +75,7 @@ class PlayerController extends Actor
     /**
      * set the paddle that is controlled by player
      * @param {Paddle} paddle
+     * @returns {void} 
      */
     setPaddle(paddle)
     {
@@ -80,6 +85,7 @@ class PlayerController extends Actor
     /**
      * will be called when key down
      * @param {KeyboardEvent} event
+     * @returns {void} 
      */
     onKeyDown(event)
     {
@@ -100,6 +106,7 @@ class PlayerController extends Actor
     /**
      * will be called when key up
      * @param {KeyboardEvent} event
+     * @returns {void} 
      */
     onKeyUp(event)
     {
@@ -151,6 +158,7 @@ class Brick extends Actor
 
     /**
      * tick the brick
+     * @returns {void} 
      */
     tick()
     {
@@ -159,6 +167,7 @@ class Brick extends Actor
 
     /**
      * draw brick
+     * @returns {void} 
      */
     draw()
     {
@@ -191,6 +200,7 @@ class Ball extends Actor
 
     /**
      * tick the ball
+     * @returns {void} 
      */
     tick()
     {
@@ -200,6 +210,7 @@ class Ball extends Actor
 
     /**
      * draw ball
+     * @returns {void} 
      */
     draw()
     {
@@ -213,6 +224,7 @@ class Ball extends Actor
 
     /**
      * move the ball
+     * @returns {void} 
      */
     move()
     {
@@ -238,21 +250,14 @@ class Ball extends Actor
             this.dy *= -1;
         }
 
-        for (let brickRow of this.world.getBricks())
+        this.getWorld().iterateBricks((brick) => 
         {
-            for (let brick of brickRow)
+            if (this.isHitActor(brick))
             {
-                if (!brick.visible)
-                {
-                    continue;
-                }
-                if (this.isHitActor(brick))
-                {
-                    this.dy *= -1;
-                    brick.setVisibility(false);
-                }
+                this.dy *= -1;
+                brick.setVisibility(false);
             }
-        }
+        }, true);
 
         // ground collision check
         if (this.y + this.radius > this.getWorld().height)
@@ -261,6 +266,10 @@ class Ball extends Actor
         }
     }
 
+    /**
+     * @param {{width: number; height: number; x: number; y: number;}} actor 
+     * @returns {boolean}
+     */
     isHitActor(actor)
     {
         return this.x - this.radius > actor.x &&
@@ -291,6 +300,7 @@ class Paddle extends Actor
 
     /**
      * tick paddle
+     * @returns {void} 
      */
     tick()
     {
@@ -300,6 +310,7 @@ class Paddle extends Actor
 
     /**
      * draw paddle
+     * @returns {void} 
      */
     draw()
     {
@@ -312,6 +323,7 @@ class Paddle extends Actor
 
     /**
      * move paddle
+     * @returns {void} 
      */
     move()
     {
@@ -376,6 +388,7 @@ class World
 
     /**
      * tick the world, 60 fps
+     * @returns {void} 
      */
     tick()
     {
@@ -402,7 +415,7 @@ class World
 
     /**
      * initialize all bricks
-     * @returns 
+     * @returns {void} 
      */
     initializeBricks()
     {
@@ -427,7 +440,7 @@ class World
 
     /**
      * get all bricks
-     * @returns array
+     * @returns {Array<Array<Brick>>}
      */
     getBricks()
     {
@@ -438,8 +451,9 @@ class World
      * iterate all bricks
      * @param {(arg0: Brick) => void} iterationCallback
      * @param {boolean} isCheckVisible
+     * @returns {void}
      */
-    iterateBricks(iterationCallback, isCheckVisible)
+    iterateBricks(iterationCallback, isCheckVisible=false)
     {
         if (this.bricks.length == 0)
         {
@@ -463,6 +477,7 @@ class World
 
     /**
      * get paddle
+     * @returns {Paddle}
      */
     getPaddle()
     {
@@ -471,6 +486,7 @@ class World
 
     /**
      * get game mode
+     * @returns {GameMode}
      */
     getGameMode()
     {
@@ -479,6 +495,7 @@ class World
 
     /**
      * initialize the PlayerController
+     * @returns {void}
      */
     initializePlayerController()
     {
@@ -499,6 +516,7 @@ class World
     /**
      * get actor's fill style
      * @param {Actor} actor: content on the website to be drawed
+     * @returns {string}
      */
     getActorFillStyle(actor)
     {
