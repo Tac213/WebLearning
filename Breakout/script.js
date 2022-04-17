@@ -1,11 +1,5 @@
 // @ts-check
 
-// the canvas html element
-const drawCanvas = document.getElementById('draw-canvas');
-// @ts-ignore
-const context = drawCanvas.getContext('2d');
-
-
 // base class of element in the canvas
 class Actor
 {
@@ -27,6 +21,15 @@ class Actor
      * draw the actor
      */
     draw() {}
+
+    /**
+     * get world
+     * @returns {World} 
+     */
+    getWorld()
+    {
+        return this.world;
+    }
 
     /** set visibility of actor
      * @param {boolean} isVisible
@@ -118,16 +121,6 @@ class PlayerController extends Actor
 }
 
 
-/**
- * get content's fill style
- * @param {{ visible: boolean; }} content: content on the website to be drawed
- */
-function _getContentFillStyle(content)
-{
-    return content.visible ? 'lightblue' : 'transparent';
-}
-
-
 // brick properties
 const brickInfo = {
     w: 70,
@@ -169,11 +162,11 @@ class Brick extends Actor
      */
     draw()
     {
-        context.beginPath();
-        context.rect(this.x, this.y, this.width, this.height);
-        context.fillStyle = _getContentFillStyle(this);
-        context.fill();
-        context.closePath();
+        this.getWorld().getCanvasRenderingContext().beginPath();
+        this.getWorld().getCanvasRenderingContext().rect(this.x, this.y, this.width, this.height);
+        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
+        this.getWorld().getCanvasRenderingContext().fill();
+        this.getWorld().getCanvasRenderingContext().closePath();
     }
 
 }
@@ -188,10 +181,8 @@ class Ball extends Actor
     constructor(world)
     {
         super(world);
-        // @ts-ignore
-        this.x = drawCanvas.width / 2;
-        // @ts-ignore
-        this.y = drawCanvas.height / 2;
+        this.x = this.getWorld().width / 2;
+        this.y = this.getWorld().height / 2;
         this.radius = 10;
         this.speed = 4;
         this.dx = this.speed;
@@ -212,11 +203,11 @@ class Ball extends Actor
      */
     draw()
     {
-        context.beginPath();
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        context.fillStyle = _getContentFillStyle(this);
-        context.fill();
-        context.closePath();
+        this.getWorld().getCanvasRenderingContext().beginPath();
+        this.getWorld().getCanvasRenderingContext().arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
+        this.getWorld().getCanvasRenderingContext().fill();
+        this.getWorld().getCanvasRenderingContext().closePath();
     }
 
 
@@ -229,15 +220,13 @@ class Ball extends Actor
         this.y += this.dy;
 
         // wall collision right / left
-        // @ts-ignore
-        if (this.x + this.radius > drawCanvas.width || this.x - this.radius < 0)
+        if (this.x + this.radius > this.getWorld().width || this.x - this.radius < 0)
         {
             this.dx *= -1;
         }
 
         // wall collsion bottom / top
-        // @ts-ignore
-        if (this.y + this.radius > drawCanvas.height || this.y - this.radius < 0)
+        if (this.y + this.radius > this.getWorld().height || this.y - this.radius < 0)
         {
             this.dy *= -1;
         }
@@ -266,8 +255,7 @@ class Ball extends Actor
         }
 
         // ground collision check
-        // @ts-ignore
-        if (this.y + this.radius > drawCanvas.height)
+        if (this.y + this.radius > this.getWorld().height)
         {
             this.world.getGameMode().onBallHitGround();
         }
@@ -293,10 +281,8 @@ class Paddle extends Actor
     constructor(world)
     {
         super(world);
-        // @ts-ignore
-        this.x = drawCanvas.width / 2 - 40;
-        // @ts-ignore
-        this.y = drawCanvas.height - 20;
+        this.x = this.getWorld().width / 2 - 40;
+        this.y = this.getWorld().height - 20;
         this.width = 80;
         this.height = 10;
         this.speed = 8;
@@ -317,11 +303,11 @@ class Paddle extends Actor
      */
     draw()
     {
-        context.beginPath();
-        context.rect(this.x, this.y, this.width, this.height);
-        context.fillStyle = _getContentFillStyle(this);
-        context.fill();
-        context.closePath();
+        this.getWorld().getCanvasRenderingContext().beginPath();
+        this.getWorld().getCanvasRenderingContext().rect(this.x, this.y, this.width, this.height);
+        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
+        this.getWorld().getCanvasRenderingContext().fill();
+        this.getWorld().getCanvasRenderingContext().closePath();
     }
 
     /**
@@ -330,8 +316,7 @@ class Paddle extends Actor
     move()
     {
         this.x += this.dx;
-        // @ts-ignore
-        this.x = Math.max(Math.min(this.x, drawCanvas.width - this.width), 0);
+        this.x = Math.max(Math.min(this.x, this.getWorld().width - this.width), 0);
     }
 
     moveLeft()
@@ -355,13 +340,21 @@ class Paddle extends Actor
 class World
 {
 
-    constructor()
+    /**
+     * @param {number} [width]
+     * @param {number} [height]
+     * @param {CanvasRenderingContext2D} [context]
+     */
+    constructor(width, height, context)
     {
         if (World._instance)
         {
             return World._instance;
         }
         World._instance = this;
+        this.width = width;
+        this.height = height;
+        this.canvasRenderingContext = context;
         this.gameMode = new GameMode(this);
         // player controller instance
         this.playerController = new PlayerController();
@@ -388,8 +381,7 @@ class World
     {
         // we should clear the canvas first
         // otherwise we can't see the ball move
-        // @ts-ignore
-        context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+        this.canvasRenderingContext.clearRect(0, 0, this.width, this.height);
 
         this.ball.tick();
         this.paddle.tick();
@@ -443,6 +435,33 @@ class World
     }
 
     /**
+     * iterate all bricks
+     * @param {(arg0: Brick) => void} iterationCallback
+     * @param {boolean} isCheckVisible
+     */
+    iterateBricks(iterationCallback, isCheckVisible)
+    {
+        if (this.bricks.length == 0)
+        {
+            return;
+        }
+        for (let brickRow of this.bricks)
+        {
+            for (let brick of brickRow)
+            {
+                if (isCheckVisible)
+                {
+                    if (!brick.visible)
+                    {
+                        continue;
+                    }
+                }
+                iterationCallback(brick);
+            }
+        }
+    }
+
+    /**
      * get paddle
      */
     getPaddle()
@@ -467,9 +486,34 @@ class World
         document.addEventListener('keydown', this.playerController.onKeyDown.bind(this.playerController));
         document.addEventListener('keyup', this.playerController.onKeyUp.bind(this.playerController));
     }
+
+    /**
+     * get canvas rendering context
+     * @returns {CanvasRenderingContext2D}
+     */
+    getCanvasRenderingContext()
+    {
+        return this.canvasRenderingContext;
+    }
+
+    /**
+     * get actor's fill style
+     * @param {Actor} actor: content on the website to be drawed
+     */
+    getActorFillStyle(actor)
+    {
+        return actor.visible ? 'lightblue' : 'transparent';
+    }
+
 }
 
 
 World._instance = null;
 
-let world = new World();
+
+// the canvas html element
+const drawCanvas = document.getElementById('draw-canvas');
+// @ts-ignore
+const context = drawCanvas.getContext('2d');
+// @ts-ignore
+let world = new World(drawCanvas.width, drawCanvas.height, context);
