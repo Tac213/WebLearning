@@ -14,15 +14,20 @@ class Actor
 
     /**
      * tick the actor
+     * will be called on every logic frame
+     * logic frame is before render frame
      * @returns {void} 
      */
     tick() {}
 
     /**
      * draw the actor
+     * will be called on every render frame
+     * render from is after logic frame
+     * @param {CanvasRenderingContext2D} [renderContext]
      * @returns {void} 
      */
-    draw() {}
+    draw(renderContext) {}
 
     /**
      * get world
@@ -57,6 +62,7 @@ class GameMode extends Actor
         {
             brick.setVisibility(true);
         });
+        this.getWorld().getPlayerState().resetScore();
     }
 }
 
@@ -128,6 +134,43 @@ class PlayerController extends Actor
 }
 
 
+class PlayerState extends Actor
+{
+    /**
+     * @param {World} world 
+     */
+    constructor(world)
+    {
+        super(world);
+        this.x = this.getWorld().width - 100;
+        this.y = 30;
+        this.score = 0;
+    }
+
+    resetScore()
+    {
+        this.score = 0;
+    }
+
+    increaseScore()
+    {
+        this.score++;
+    }
+
+    /**
+     * draw player state on screen
+     * @param {CanvasRenderingContext2D} [renderContext]
+     * @returns {void} 
+     */
+    draw(renderContext)
+    {
+        renderContext.font = '20px Arial';
+        renderContext.fillText(`Score: ${this.score}`, this.x, this.y);
+    }
+
+}
+
+
 // brick properties
 const brickInfo = {
     w: 70,
@@ -157,25 +200,30 @@ class Brick extends Actor
     }
 
     /**
-     * tick the brick
+     * draw brick
+     * @param {CanvasRenderingContext2D} [renderContext]
      * @returns {void} 
      */
-    tick()
+    draw(renderContext)
     {
-        this.draw();
+        renderContext.beginPath();
+        renderContext.rect(this.x, this.y, this.width, this.height);
+        renderContext.fillStyle = this.getWorld().getActorFillStyle(this);
+        renderContext.fill();
+        renderContext.closePath();
     }
 
     /**
-     * draw brick
-     * @returns {void} 
+     * simply overload set visible to increase score
+     * @param {boolean} isVisible 
      */
-    draw()
+    setVisibility(isVisible)
     {
-        this.getWorld().getCanvasRenderingContext().beginPath();
-        this.getWorld().getCanvasRenderingContext().rect(this.x, this.y, this.width, this.height);
-        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
-        this.getWorld().getCanvasRenderingContext().fill();
-        this.getWorld().getCanvasRenderingContext().closePath();
+        super.setVisibility(isVisible);
+        if (!isVisible)
+        {
+            this.getWorld().getPlayerState().increaseScore();
+        }
     }
 
 }
@@ -205,20 +253,20 @@ class Ball extends Actor
     tick()
     {
         this.move();
-        this.draw();
     }
 
     /**
      * draw ball
+     * @param {CanvasRenderingContext2D} [renderContext]
      * @returns {void} 
      */
-    draw()
+    draw(renderContext)
     {
-        this.getWorld().getCanvasRenderingContext().beginPath();
-        this.getWorld().getCanvasRenderingContext().arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
-        this.getWorld().getCanvasRenderingContext().fill();
-        this.getWorld().getCanvasRenderingContext().closePath();
+        renderContext.beginPath();
+        renderContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        renderContext.fillStyle = this.getWorld().getActorFillStyle(this);
+        renderContext.fill();
+        renderContext.closePath();
     }
 
 
@@ -305,20 +353,20 @@ class Paddle extends Actor
     tick()
     {
         this.move();
-        this.draw();
     }
 
     /**
      * draw paddle
+     * @param {CanvasRenderingContext2D} [renderContext]
      * @returns {void} 
      */
-    draw()
+    draw(renderContext)
     {
-        this.getWorld().getCanvasRenderingContext().beginPath();
-        this.getWorld().getCanvasRenderingContext().rect(this.x, this.y, this.width, this.height);
-        this.getWorld().getCanvasRenderingContext().fillStyle = this.getWorld().getActorFillStyle(this);
-        this.getWorld().getCanvasRenderingContext().fill();
-        this.getWorld().getCanvasRenderingContext().closePath();
+        renderContext.beginPath();
+        renderContext.rect(this.x, this.y, this.width, this.height);
+        renderContext.fillStyle = this.getWorld().getActorFillStyle(this);
+        renderContext.fill();
+        renderContext.closePath();
     }
 
     /**
@@ -367,11 +415,15 @@ class World
         this.width = width;
         this.height = height;
         this.canvasRenderingContext = context;
-        this.gameMode = new GameMode(this);
+        this.actors = [];
+        // game mode instance
+        this.gameMode = this.spawnActor(GameMode);
         // player controller instance
-        this.playerController = new PlayerController();
+        this.playerController = this.spawnActor(PlayerController);
+        // player state instance
+        this.playerState = this.spawnActor(PlayerState);
         // paddle instance
-        this.paddle = new Paddle(this);
+        this.paddle = this.spawnActor(Paddle);
         this.initializePlayerController();
         // brick config
         this.brickRowCount = 9;
@@ -380,9 +432,9 @@ class World
         this.bricks = [];
         this.initializeBricks();
         // ball instance
-        this.ball = new Ball(this);
+        this.ball = this.spawnActor(Ball);
 
-        // call tick for the first time
+        // call tick for the first time to start tick
         this.tick();
     }
 
@@ -392,25 +444,55 @@ class World
      */
     tick()
     {
-        // we should clear the canvas first
-        // otherwise we can't see the ball move
-        this.canvasRenderingContext.clearRect(0, 0, this.width, this.height);
-
-        this.ball.tick();
-        this.paddle.tick();
-        for (let brickRow of this.bricks)
-        {
-            for (let brick of brickRow)
-            {
-                brick.tick();
-            }
-        }
+        // world contains logic frame and render frame
+        this.logicFrame();
+        this.renderFrame();
 
         // requestAnimationFrame makes this function be called every frame
         // if you don't use 'bind(this)', in the next frame, 'this' will be undefined
         // the code next line also work fine
         // requestAnimationFrame(() => this.tick())
         requestAnimationFrame(this.tick.bind(this));
+    }
+
+    /**
+     * logic frame of the game
+     * @returns {void}
+     */
+    logicFrame()
+    {
+        for (let actor of this.actors)
+        {
+            actor.tick();
+        }
+    }
+
+    /**
+     * render frame of the game
+     * @returns {void}
+     */
+    renderFrame()
+    {
+        // we should clear the canvas first
+        // otherwise we can't see the ball move
+        this.canvasRenderingContext.clearRect(0, 0, this.width, this.height);
+
+        for (let actor of this.actors)
+        {
+            actor.draw(this.canvasRenderingContext);
+        }
+    }
+
+    /**
+     * spawn actor
+     * @param {new (arg0: World) => Actor} actorClass
+     * @returns {any}
+     */
+    spawnActor(actorClass)
+    {
+        let actor = new actorClass(this);
+        this.actors.push(actor);
+        return actor;
     }
 
     /**
@@ -430,7 +512,7 @@ class World
             for (let j = 0; j < this.brickColumnCount; j++)
             {
                 let y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-                let brick = new Brick(this);
+                let brick = this.spawnActor(Brick);
                 brick.x = x;
                 brick.y = y;
                 this.bricks[i][j] = brick;
@@ -491,6 +573,24 @@ class World
     getGameMode()
     {
         return this.gameMode;
+    }
+
+    /**
+     * get player state
+     * @returns {PlayerState}
+     */
+    getPlayerState()
+    {
+        return this.playerState;
+    }
+
+    /**
+     * get player controller
+     * @returns {PlayerController}
+     */
+    getPlayerController()
+    {
+        return this.playerController;
     }
 
     /**
