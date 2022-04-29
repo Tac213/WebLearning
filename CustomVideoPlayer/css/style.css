@@ -1,0 +1,69 @@
+/* import font Questrial from google pis */
+@import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: lightblue;
+    margin: 0;
+    /* flex layout attributes */
+    display: flex;  /* use flex box layout https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-height: 100vh;
+}
+
+.title {
+    font-size: 45px;
+    color: #fff;
+}
+
+.screen {
+    cursor: pointer;
+    width: 60%;
+    background-color: black;
+    border-radius: 10px;
+}
+
+.controls {
+    background-color: #333;
+    color: white;
+    width: 60%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.controls .btn {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.controls .fa-play {
+    color: #28a745;
+}
+
+.controls .fa-pause {
+    color: white;
+}
+
+.controls .fa-stop {
+    color: #dc3545;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+@media (max-width: 800px) {
+  .screen,
+  .controls {
+    width: 90%;
+  }
+}

@@ -7,6 +7,13 @@
             "name": "Breakout",
             "url": "http://localhost:5500/Breakout",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "CustomVideoPlayer",
+            "url": "http://localhost:5500/CustomVideoPlayer",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
