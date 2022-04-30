@@ -29,5 +29,12 @@
             "url": "http://localhost:5500/ExchangeRate",
             "webRoot": "${workspaceFolder}"
         },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "ExpenseTracker",
+            "url": "http://localhost:5500/ExpenseTracker",
+            "webRoot": "${workspaceFolder}"
+        },
     ]
 }
