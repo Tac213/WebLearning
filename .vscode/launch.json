@@ -22,5 +22,12 @@
             "url": "http://localhost:5500/DomArrayMethods",
             "webRoot": "${workspaceFolder}"
         },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "ExchangeRate",
+            "url": "http://localhost:5500/ExchangeRate",
+            "webRoot": "${workspaceFolder}"
+        },
     ]
 }
