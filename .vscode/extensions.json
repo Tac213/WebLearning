@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ritwickdey.LiveServer",
+        "msjsdiag.debugger-for-chrome",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+    ]
+}
