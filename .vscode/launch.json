@@ -35,6 +35,29 @@
             "name": "ExpenseTracker",
             "url": "http://localhost:5500/ExpenseTracker",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "name": "ExpenseTracker(Electron Renderer)",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "runtimeArgs": ["${workspaceFolder}/ExpenseTracker/electron.js", "--remote-debugging-port=9222"],
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "name": "ExpenseTracker(Electron Main)",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "program": "${workspaceFolder}/ExpenseTracker/electron.js",
+            "protocol": "inspector"
         }
     ]
 }
