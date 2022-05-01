@@ -6,7 +6,7 @@ body {
     background-color: lightblue;
     margin: 0;
     /* flex layout attributes */
-    display: flex;  /* use flex box layout https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox */
+    display: flex; /* use flex box layout https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox */
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -19,8 +19,8 @@ body {
 
 #draw-canvas {
     background-color: #f0f0f0;
-    display: block;  /* use block layout */
-    border-radius: 5px;  /* make the block a rounded rectangle */
+    display: block; /* use block layout */
+    border-radius: 5px; /* make the block a rounded rectangle */
 }
 
 .btn {
@@ -58,7 +58,7 @@ body {
     width: 400px;
     padding: 20px;
     line-height: 1.5;
-    min-height: 100vh;  /* makes div expand the whole view height */
+    min-height: 100vh; /* makes div expand the whole view height */
     background: #333;
     color: white;
     transform: translateX(-400px);

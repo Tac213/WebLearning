@@ -1,0 +1,24 @@
+{
+    "name": "weblearning",
+    "version": "1.0.0",
+    "description": "A web learning repository follows [vanillawebprojects](https://github.com/bradtraversy/vanillawebprojects).",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Tac213/WebLearning.git"
+    },
+    "keywords": [],
+    "author": "Tac",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Tac213/WebLearning/issues"
+    },
+    "homepage": "https://github.com/Tac213/WebLearning#readme",
+    "devDependencies": {
+        "eslint": "^8.14.0",
+        "prettier": "^2.6.2"
+    }
+}

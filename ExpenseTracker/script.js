@@ -3,23 +3,20 @@
 const EValidMoneyClass = {
     Income: 'income',
     Expense: 'expense',
-}
+};
 
 const MONEY_FORMATTER = new Intl.NumberFormat('en-us', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 2,
-})
+});
 
-
-class Transaction
-{
+class Transaction {
     /**
      * @param {string} name
-     * @param {number} amount 
+     * @param {number} amount
      */
-    constructor (name, amount)
-    {
+    constructor(name, amount) {
         this.id = Math.floor(Math.random() * 100000000);
         this.name = name;
         this.isIncome = amount > 0;
@@ -29,8 +26,7 @@ class Transaction
     /**
      * @returns {string}
      */
-    format()
-    {
+    format() {
         return MONEY_FORMATTER.format(this.amount);
     }
 
@@ -38,8 +34,7 @@ class Transaction
      * @param {{ name: string; amount: number; id: number; isIncome: boolean; }} obj
      * @returns {Transaction}
      */
-    static createWithJson(obj)
-    {
+    static createWithJson(obj) {
         let transaction = new Transaction(obj.name, obj.amount);
         transaction.id = obj.id;
         transaction.isIncome = obj.isIncome;
@@ -47,21 +42,26 @@ class Transaction
     }
 }
 
-
-class ExpenseTracker
-{
+class ExpenseTracker {
     /**
-     * 
-     * @param {HTMLHeadingElement} balanceElement 
-     * @param {HTMLParagraphElement} moneyIncomeElement 
-     * @param {HTMLParagraphElement} moneyExpenseElement 
-     * @param {HTMLUListElement} historyListElement 
+     *
+     * @param {HTMLHeadingElement} balanceElement
+     * @param {HTMLParagraphElement} moneyIncomeElement
+     * @param {HTMLParagraphElement} moneyExpenseElement
+     * @param {HTMLUListElement} historyListElement
      * @param {HTMLFormElement} formElement
-     * @param {HTMLInputElement} nameInput 
-     * @param {HTMLInputElement} amountInput 
+     * @param {HTMLInputElement} nameInput
+     * @param {HTMLInputElement} amountInput
      */
-    constructor(balanceElement, moneyIncomeElement, moneyExpenseElement, historyListElement, formElement, nameInput, amountInput)
-    {
+    constructor(
+        balanceElement,
+        moneyIncomeElement,
+        moneyExpenseElement,
+        historyListElement,
+        formElement,
+        nameInput,
+        amountInput
+    ) {
         this.balanceElement = balanceElement;
         this.moneyIncomeElement = moneyIncomeElement;
         this.moneyExpenseElement = moneyExpenseElement;
@@ -77,11 +77,9 @@ class ExpenseTracker
         this.formElement.addEventListener('submit', this.addTransaction.bind(this));
     }
 
-    updateView()
-    {
+    updateView() {
         this.historyListElement.innerHTML = '';
-        for (let transaction of this.transactions)
-        {
+        for (let transaction of this.transactions) {
             this.domAddTransaction(transaction);
         }
         this.updateValues();
@@ -89,27 +87,28 @@ class ExpenseTracker
 
     /**
      * add transaction to DOM
-     * @param {Transaction} transaction 
+     * @param {Transaction} transaction
      */
-    domAddTransaction(transaction)
-    {
+    domAddTransaction(transaction) {
         /** @type {HTMLLIElement} */
         let item = document.createElement('li');
         item.classList.add(transaction.isIncome ? EValidMoneyClass.Income : EValidMoneyClass.Expense);
         let sign = transaction.isIncome ? '+' : '-';
-        item.innerHTML = `${transaction.name} <span>${sign}${transaction.format()}</span> <button class="delete-btn" onclick="expenseTracker.removeTransaction(${transaction.id})">x</button>`
+        item.innerHTML = `${
+            transaction.name
+        } <span>${sign}${transaction.format()}</span> <button class="delete-btn" onclick="expenseTracker.removeTransaction(${
+            transaction.id
+        })">x</button>`;
         this.historyListElement.appendChild(item);
     }
 
     /**
-     * 
-     * @param {SubmitEvent} event 
+     *
+     * @param {SubmitEvent} event
      */
-    addTransaction(event)
-    {
+    addTransaction(event) {
         event.preventDefault();
-        if (this.nameInput.value.trim() === '' || this.amountInput.value.trim() === '')
-        {
+        if (this.nameInput.value.trim() === '' || this.amountInput.value.trim() === '') {
             alert('Please enter name and amount');
             return;
         }
@@ -122,48 +121,38 @@ class ExpenseTracker
     /**
      * @param {number} transactionId
      */
-    removeTransaction(transactionId)
-    {
-        this.transactions = this.transactions.filter(transaction => transaction.id !== transactionId);
+    removeTransaction(transactionId) {
+        this.transactions = this.transactions.filter((transaction) => transaction.id !== transactionId);
 
         this.updateLocalStorage();
         this.updateView();
     }
 
-    initializeTransaction()
-    {
+    initializeTransaction() {
         let localStorageTransaction = localStorage.getItem('transactions');
         let transactions = localStorageTransaction !== null ? JSON.parse(localStorageTransaction) : [];
-        for (let obj of transactions)
-        {
-            if (!obj)
-            {
+        for (let obj of transactions) {
+            if (!obj) {
                 continue;
             }
             this.transactions.push(Transaction.createWithJson(obj));
         }
     }
 
-    updateLocalStorage()
-    {
+    updateLocalStorage() {
         localStorage.setItem('transactions', JSON.stringify(this.transactions));
     }
 
     /**
      * update balance income expense
      */
-    updateValues()
-    {
+    updateValues() {
         let income = 0;
         let expense = 0;
-        for (let transaction of this.transactions)
-        {
-            if (transaction.isIncome)
-            {
+        for (let transaction of this.transactions) {
+            if (transaction.isIncome) {
                 income += transaction.amount;
-            }
-            else
-            {
+            } else {
                 expense += transaction.amount;
             }
         }
@@ -173,7 +162,6 @@ class ExpenseTracker
     }
 }
 
-
 let expenseTracker = new ExpenseTracker(
     // @ts-ignore
     document.getElementById('balance'),
@@ -182,5 +170,5 @@ let expenseTracker = new ExpenseTracker(
     document.getElementById('list'),
     document.getElementById('form'),
     document.getElementById('name'),
-    document.getElementById('amount'),
+    document.getElementById('amount')
 );

@@ -1,22 +1,17 @@
 // @ts-check
 
-
-class User
-{
+class User {
     /**
-     * @param {string} firstName 
-     * @param {string} lastName 
+     * @param {string} firstName
+     * @param {string} lastName
      */
-    constructor(firstName, lastName)
-    {
+    constructor(firstName, lastName) {
         this.name = `${firstName} ${lastName}`;
         this.money = Math.floor(Math.random() * 1_000_000);
     }
 }
 
-
-class DomArrayMethod
-{
+class DomArrayMethod {
     /**
      * @param {HTMLElement} main
      * @param {HTMLButtonElement} addButon
@@ -25,8 +20,7 @@ class DomArrayMethod
      * @param {HTMLButtonElement} sortButton
      * @param {HTMLButtonElement} calculateButton
      */
-    constructor (main, addButon, doubleButton, filterButton, sortButton, calculateButton)
-    {
+    constructor(main, addButon, doubleButton, filterButton, sortButton, calculateButton) {
         this.main = main;
         this.addButton = addButon;
         this.doubleButton = doubleButton;
@@ -55,8 +49,7 @@ class DomArrayMethod
         this.totalWealthElement = null;
     }
 
-    async fetchRandomUser()
-    {
+    async fetchRandomUser() {
         /**@type {Response} */
         let res = await fetch('https://randomuser.me/api');
         // for more infomation, visit: https://randomuser.me
@@ -68,10 +61,9 @@ class DomArrayMethod
 
     /**
      * add user
-     * @param {User} user 
+     * @param {User} user
      */
-    addUser(user)
-    {
+    addUser(user) {
         this.users.push(user);
         this.updateDom();
     }
@@ -79,62 +71,53 @@ class DomArrayMethod
     /**
      * update DOM by this.users
      */
-    updateDom()
-    {
+    updateDom() {
         this.main.innerHTML = '<h2><strong>Person</strong> Money</h2>';
-        for (let user of this.users)
-        {
+        for (let user of this.users) {
             /**@type {HTMLDivElement} */
             let newElement = document.createElement('div');
             newElement.classList.add('person');
             newElement.innerHTML = `<strong>${user.name}</strong> ${this.moneyFormatter.format(user.money)}`;
             this.main.appendChild(newElement);
         }
-        if (this.totalWealthElement)
-        {
+        if (this.totalWealthElement) {
             this.totalWealthElement.style.visibility = 'hidden';
             this.main.appendChild(this.totalWealthElement);
         }
     }
 
-    doubleMoney()
-    {
-        for (let user of this.users)
-        {
+    doubleMoney() {
+        for (let user of this.users) {
             user.money *= 2;
         }
         this.updateDom();
     }
 
-    sortByRichest()
-    {
+    sortByRichest() {
         this.users.sort((userA, userB) => userB.money - userA.money);
         this.updateDom();
     }
 
-    calculateWealth()
-    {
+    calculateWealth() {
         let totalWealth = 0;
-        for (let user of this.users)
-        {
+        for (let user of this.users) {
             totalWealth += user.money;
         }
-        if (!this.totalWealthElement)
-        {
+        if (!this.totalWealthElement) {
             this.totalWealthElement = document.createElement('div');
             this.main.appendChild(this.totalWealthElement);
         }
         this.totalWealthElement.style.visibility = 'visible';
-        this.totalWealthElement.innerHTML = `<h3>Total Wealth: <strong>${this.moneyFormatter.format(totalWealth)}</strong?</h3>`;
+        this.totalWealthElement.innerHTML = `<h3>Total Wealth: <strong>${this.moneyFormatter.format(
+            totalWealth
+        )}</strong?</h3>`;
     }
 
-    discardPoorUser()
-    {
-        this.users = this.users.filter(user => user.money > 1_000_000);
+    discardPoorUser() {
+        this.users = this.users.filter((user) => user.money > 1_000_000);
         this.updateDom();
     }
 }
-
 
 let domArrayMethod = new DomArrayMethod(
     document.getElementById('main'),
@@ -147,5 +130,5 @@ let domArrayMethod = new DomArrayMethod(
     // @ts-ignore
     document.getElementById('sort-by-richest'),
     // @ts-ignore
-    document.getElementById('calculate-wealth'),
+    document.getElementById('calculate-wealth')
 );

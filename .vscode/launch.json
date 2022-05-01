@@ -35,6 +35,6 @@
             "name": "ExpenseTracker",
             "url": "http://localhost:5500/ExpenseTracker",
             "webRoot": "${workspaceFolder}"
-        },
+        }
     ]
 }

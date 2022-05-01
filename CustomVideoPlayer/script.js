@@ -1,17 +1,15 @@
 // @ts-check
 
-class VideoPlayer
-{
+class VideoPlayer {
     /**
-     * 
-     * @param {HTMLVideoElement} inVideo 
+     *
+     * @param {HTMLVideoElement} inVideo
      * @param {HTMLButtonElement} inPlayButton
      * @param {HTMLButtonElement} inStopButton
      * @param {HTMLProgressElement} inProgress
      * @param {HTMLSpanElement} inTimestamp
      */
-    constructor(inVideo, inPlayButton, inStopButton, inProgress, inTimestamp)
-    {
+    constructor(inVideo, inPlayButton, inStopButton, inProgress, inTimestamp) {
         this.video = inVideo;
         this.playButton = inPlayButton;
         this.stopButton = inStopButton;
@@ -37,26 +35,21 @@ class VideoPlayer
      * @param {PointerEvent} event
      * @returns {void}
      */
-    toggleVideoStatus(event)
-    {
+    toggleVideoStatus(event) {
         this.isStopped = false;
-        if (this.video.paused)
-        {
+        if (this.video.paused) {
             this.video.play();
-        }
-        else
-        {
+        } else {
             this.video.pause();
         }
     }
 
     /**
      * stop video
-     * @param {PointerEvent} event 
+     * @param {PointerEvent} event
      * @returns {void}
      */
-    stopVideo(event)
-    {
+    stopVideo(event) {
         this.video.currentTime = 0;
         this.video.pause();
         this.isStopped = true;
@@ -67,14 +60,10 @@ class VideoPlayer
      * @param {Event} event
      * @returns {void}
      */
-    togglePlayIcon(event)
-    {
-        if (this.video.paused)
-        {
+    togglePlayIcon(event) {
+        if (this.video.paused) {
             this.playButton.innerHTML = '<i class="fa fa-play fa-2x"></i>';
-        }
-        else
-        {
+        } else {
             this.playButton.innerHTML = '<i class="fa fa-pause fa-2x"></i>';
         }
     }
@@ -84,8 +73,7 @@ class VideoPlayer
      * @param {Event} event
      * @returns {void}
      */
-    updateProgress(event)
-    {
+    updateProgress(event) {
         this.progress.value = (this.video.currentTime / this.video.duration) * 100;
 
         this.timestamp.innerHTML = this.formatTime(this.video.currentTime);
@@ -96,24 +84,20 @@ class VideoPlayer
      * @param {number} time
      * @returns {string}
      */
-    formatTime(time)
-    {
+    formatTime(time) {
         let hours = Math.floor(time / 3600);
         let minutes = Math.floor((time % 3600) / 60);
         let seconds = Math.floor(time % 60);
 
         let ret = '';
-        if (hours > 0)
-        {
+        if (hours > 0) {
             ret += '' + hours + ':';
         }
-        if (minutes < 10)
-        {
+        if (minutes < 10) {
             ret += '0';
         }
         ret += '' + minutes + ':';
-        if (seconds < 10)
-        {
+        if (seconds < 10) {
             ret += '0';
         }
         ret += '' + seconds;
@@ -122,18 +106,15 @@ class VideoPlayer
 
     /**
      * setVideoProgress
-     * @param {Event} event 
+     * @param {Event} event
      */
-    setVideoProgress(event)
-    {
-        if (this.isStopped)
-        {
+    setVideoProgress(event) {
+        if (this.isStopped) {
             this.progress.value = 0;
             return;
         }
-        this.video.currentTime = this.progress.value * this.video.duration / 100;
+        this.video.currentTime = (this.progress.value * this.video.duration) / 100;
     }
-
 }
 
 const videoPlayer = new VideoPlayer(
@@ -146,5 +127,5 @@ const videoPlayer = new VideoPlayer(
     // @ts-ignore
     document.getElementById('progress'),
     // @ts-ignore
-    document.getElementById('timestamp'),
-)
+    document.getElementById('timestamp')
+);
