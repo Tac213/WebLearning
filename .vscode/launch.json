@@ -58,6 +58,24 @@
             },
             "program": "${workspaceFolder}/ExpenseTracker/electron.js",
             "protocol": "inspector"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "FormValidator",
+            "url": "http://localhost:5500/FormValidator",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "name": "FormValidator(Electron)",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "runtimeArgs": ["${workspaceFolder}/FormValidator/electron.js", "--remote-debugging-port=9222"],
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
