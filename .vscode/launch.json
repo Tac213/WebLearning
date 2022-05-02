@@ -76,6 +76,13 @@
             },
             "runtimeArgs": ["${workspaceFolder}/FormValidator/electron.js", "--remote-debugging-port=9222"],
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Hangman",
+            "url": "http://localhost:5500/Hangman",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
