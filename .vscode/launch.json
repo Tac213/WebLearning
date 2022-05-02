@@ -83,6 +83,13 @@
             "name": "Hangman",
             "url": "http://localhost:5500/Hangman",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "InfiniteScrollBlog",
+            "url": "http://localhost:5500/InfiniteScrollBlog",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
