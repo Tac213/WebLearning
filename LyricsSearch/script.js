@@ -39,6 +39,7 @@ class LyricsSearch {
      * @param {SubmitEvent} event
      */
     async onSearch(event) {
+        event.preventDefault();
         const searchText = this.searchInput.value;
         if (!searchText) {
             this.notify('Please type in a search term');
