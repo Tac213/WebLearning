@@ -97,6 +97,13 @@
             "name": "LyricsSearch",
             "url": "http://localhost:5500/LyricsSearch",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "MealFinder",
+            "url": "http://localhost:5500/MealFinder",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
