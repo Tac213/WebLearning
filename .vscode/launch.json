@@ -90,6 +90,13 @@
             "name": "InfiniteScrollBlog",
             "url": "http://localhost:5500/InfiniteScrollBlog",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "LyricsSearch",
+            "url": "http://localhost:5500/LyricsSearch",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
