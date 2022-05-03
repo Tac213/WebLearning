@@ -104,6 +104,13 @@
             "name": "MealFinder",
             "url": "http://localhost:5500/MealFinder",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "MemoryCards",
+            "url": "http://localhost:5500/MemoryCards",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
