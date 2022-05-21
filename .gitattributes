@@ -3,5 +3,8 @@
 *.jpg filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
 
+# music files
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+
 # video files
 *.mp4 filter=lfs diff=lfs merge=lfs -text

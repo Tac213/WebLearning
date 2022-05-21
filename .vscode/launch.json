@@ -124,6 +124,13 @@
             "name": "MovieSeatBooking",
             "url": "http://localhost:5500/MovieSeatBooking",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "MusicPlayer",
+            "url": "http://localhost:5500/MusicPlayer",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
