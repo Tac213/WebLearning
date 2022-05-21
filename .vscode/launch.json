@@ -131,6 +131,13 @@
             "name": "MusicPlayer",
             "url": "http://localhost:5500/MusicPlayer",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "NewYearCountdown",
+            "url": "http://localhost:5500/NewYearCountdown",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
