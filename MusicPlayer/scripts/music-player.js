@@ -46,8 +46,8 @@ class MusicPlayer {
 
     pauseCurrentSong() {
         this.musicContainer.classList.remove('play');
-        this.playButton.querySelector('i.fas').classList.remove('fa-play');
-        this.playButton.querySelector('i.fas').classList.add('fa-pause');
+        this.playButton.querySelector('i.fas').classList.add('fa-play');
+        this.playButton.querySelector('i.fas').classList.remove('fa-pause');
 
         this.audioElement.pause();
     }
