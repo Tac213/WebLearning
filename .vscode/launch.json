@@ -166,6 +166,13 @@
             "name": "SpeechTextReader",
             "url": "http://localhost:5500/SpeechTextReader",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "TypingGame",
+            "url": "http://localhost:5500/TypingGame",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
