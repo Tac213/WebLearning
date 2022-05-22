@@ -138,6 +138,13 @@
             "name": "NewYearCountdown",
             "url": "http://localhost:5500/NewYearCountdown",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "RelaxerApp",
+            "url": "http://localhost:5500/RelaxerApp",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
