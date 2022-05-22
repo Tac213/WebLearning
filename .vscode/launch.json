@@ -152,6 +152,13 @@
             "name": "DraggableList",
             "url": "http://localhost:5500/DraggableList",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "SpeakNumberGuess",
+            "url": "http://localhost:5500/SpeakNumberGuess",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
