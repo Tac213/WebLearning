@@ -145,6 +145,13 @@
             "name": "RelaxerApp",
             "url": "http://localhost:5500/RelaxerApp",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "DraggableList",
+            "url": "http://localhost:5500/DraggableList",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
