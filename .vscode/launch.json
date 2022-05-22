@@ -159,6 +159,13 @@
             "name": "SpeakNumberGuess",
             "url": "http://localhost:5500/SpeakNumberGuess",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "SpeechTextReader",
+            "url": "http://localhost:5500/SpeechTextReader",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
